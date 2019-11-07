@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/FileSaver.js"></script>
+	<title>excel——json</title>
+</head>
+<body>
+	<textarea id="input_text" placeholder="这里输入excel表格内容" style="width: 500px;height: 500px;"></textarea>
+	<br>
+	<button id="change_button">转换</button>
+	<br>
+	<br>
+	<textarea id="post_text" style="width: 500px;height: 500px;">这里输出json串内容</textarea>
+	<br>
+	<button id="download_bian">下载为边文件</button>
+	<button id="download_dian">下载为点文件</button>
+
+	<script type="text/javascript">
+		$('#change_button').click(function(){
+			//$('#post_text').val($('#input_text').val().replace(/\n/g,";"));
+			var input = $('#input_text').val().replace(/\n/g,";").split(";");
+			var list_main = []
+			res = "[";
+			for(var i = 0;i < input.length;i++){
+				if(i == 0){
+					list_main = input[i].split("	");
+				}else{
+					var input_x = input[i].split("	");
+					for(var j = 0;j < input_x.length;j++){
+						if(j == 0){
+							res += "{\""+list_main[j] +"\":\""+input_x[j]+"\"";
+						}else{
+							res += ",\""+list_main[j] +"\":\""+input_x[j]+"\"";
+						}
+
+						if (j == (input_x.length-1)) {
+							if(i == (input.length-1)){
+								res += "}\n"
+							}else{
+								res += "},\n"
+							}
+							
+						}
+						
+					}
+				}	
+			}
+			res += "]";
+			var mobileCode = res;
+			
+
+
+			$('#post_text').val(res);
+			//console.log(input);
+		})
+		$('#download_bian').click(function(){
+			var output = $('#post_text').val();
+			output = ("var bian = "+output);
+			download(output,"bian.js");
+		})
+		$('#download_dian').click(function(){
+			var output = $('#post_text').val();
+			output = ("var dian = "+output);
+			download(output,"dian.js");
+		})
+		function download(mobileCode,name) {
+			var file = new File([mobileCode], name, { type: "text/plain;charset=utf-8" });
+			saveAs(file);
+		}
+
+		
+	</script>
+</body>
+
+
+</html>

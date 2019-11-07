@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<!-- yunfang：20190929 -->
+<head>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script type="text" value = "20191016 韵芳"></script>
+    <script src="dist/echarts.min.js"></script>
+    <script type="text/javascript" src="js/bian.js"></script>
+    <script type="text/javascript" src="js/dian.js"></script>
+<!--     <script type="text/javascript" src="bian.js"></script>
+    <script type="text/javascript" src="jiedian.js"></script> -->
+    <script type="text/javascript" src="7jiadian.js"></script>
+    <script type="text/javascript" src="7bian.js"></script>
+    <script type="text/javascript" src="30jiedian.js"></script>
+    <script type="text/javascript" src="30bian.js"></script>
+    <script type="text/javascript" src="dist/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="dist/main.js"></script>
+    
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <center><h5>光标放在图上双指下移放大，双指上移缩小，欢迎提意见zhifang.bao</h5></center>
+    <div style="position: absolute;width: 2%;z-index: 99;background-color: aliceblue;text-align: center;border-radius: 4px;" id="select-none">
+    	<p style="color: #0000008c;">筛选器</p>
+    </div>
+
+    
+    <div style="position: absolute;width: 15%;z-index: 99;display: none;background-color: aliceblue;border-radius: 4px;" id="select">
+    	<p id = "select-p" style="text-align: center;line-height: 0px;color: #0000008c">筛选器</p>
+    	<input type="test" name="time" placeholder="此处填写（7/30）天" style="width: 96%;">
+    	<input type="test" name="element" placeholder="此处填写要查询的维度（不填默认为ip）" style="width: 96%;">
+	    <input type="test" name="name" placeholder="此处填写公司名称" style="width: 96%;">
+	    <input type="test" name="round" placeholder="此处填写边重复率大于x%" style="width: 96%">
+	    <input type="test" name="cnt" placeholder="此处填写边重复数大于x" style="width: 96%">
+	    <select id="select_lay" onclick="change_lay(this)">
+			<option value="circular">circular</option>
+			<option value="force">force</option>
+		</select>
+		<div id="power" style="display: none;">
+		<input type="test" name="repulsion" placeholder="节点间斥力因子" style="width: 96%">
+		<input type="test" name="gravity" placeholder="向中心点引力因子" style="width: 96%">
+		</div>
+	    <br>
+	    <button onclick="shaixuan()" value="请按这里" style="width: 100%;background-color: #26a2ff;color: #fff;border-radius: 4px;">点击筛选</button>
+	    <br>
+	</div>
+
+	<div style="position: absolute;width: 2%;z-index: 99;background-color: aliceblue;text-align: center;border-radius: 4px;float: right;margin-left: 97%;" id="show-none">
+    	<p style="color: #0000008c;">数据展示</p>
+    </div>
+
+    <div style="position: absolute;width: 20%;z-index: 99;background-color: aliceblue;text-align: center;border-radius: 4px;float: right;display: none;margin-left: 79%;font-size: x-small;" id="show">
+    	<p id="show-p">数据展示</p>
+    	<textarea style="color: #0000008c;width: 98%;background-color: white;border: aliceblue;height: 600px" id="show-text" readonly="readonly">暂无数据</textarea>
+    </div>
+    <div id="main" style="width: 100%;height:800px"></div>
+
+    <script type="text/javascript">
+    	log1 = "竞对图V2.0版本\n";
+        log1+="更新说明：\n";
+        log1+="1.增加了右边的数据展示，展示内容为边筛选后的边数据，按重复率进行排序\n";
+
+        log1+="竞对图V2.1版本\n";
+        log1+="更新说明：\n";
+        log1+="1.增加了时间，维度的划分，由时间和维度筛选器控制。\n";
+        log1+="2.新增了时间，维度的筛选器，去除了echarts自带的点筛选器，统一在筛选div中筛选\n";
+        log1+="3.对查看进行了限制，避免了数据量过大导致的页面渲染卡死\n";
+        log1+="4.在边维度中增加了测试时间维度，点维度单独表示公司\n";
+        log1+="5.对点的大小进行了重新设定，按照此公司与其他公司最大的重复数量进行划分，规定为5类，x>10000，5000<x<1000,1000<x<500,500<x<100,100<x<0，其中阶段4及以上要重点关注\n";
+        //alert(log1);
+    	
+
+
+    	click_mo();
+
+
+    	var myChart = echarts.init(document.getElementById('main'));
+    	shaixuan();
+
+
+
+    	//option1(myChart,bian,jiedian);
+
+		
+
+   //  	function option2(myChart,bian,jiedian){
+   //  		myChart.hideLoading();
+   //  		myChart.setOption(option = {
+			//     title: {
+			//         text: ''
+			//     },
+			//     tooltip:{
+			//         formatter:function(params){
+			//         	return "起始点："+params.data.source+",重复率："+params.data.value + ",重复数：" + params.data.value1+",测试时间："+params.data.time_s;
+			//         }
+
+			//     },
+			//     animationDurationUpdate: 1500,
+			//     animationEasingUpdate: 'quinticInOut',
+			//     series : [
+			//         {
+			//             type: 'graph',
+			//             layout: 'circular',//'force',
+			//             // progressiveThreshold: 700,
+			//             data: jiedian.map(function (node) {
+			//                 return {
+			//                     id: node.id,
+			//                     name: node.id,
+			//                     symbolSize: (node.size*2),
+			//                     value1:node.cnt,
+			//                     value:"无统计"
+
+
+			//                 };
+			//             }),
+			//             links: bian.map(function (edge) {
+			//                 return {
+			//                     source: edge.Source,
+			//                     target: edge.Target,
+			//                     value:edge.round,
+			//                     value1:edge.cnt,
+			//                     time_s:edge.start_time,
+			//                     label: {
+			// 		                normal: {
+			// 		                    show: false
+			// 		                }
+			// 		            },
+			// 		            lineStyle:{
+			// 		               	color:"#0000006b"
+			// 		            }
+			//                 };
+			//             }),
+			//            	//edgeSymbol: ['circle', 'arrow'],
+			//             label: {
+			//                 emphasis: {
+			//                     position: 'right',
+			//                     show: true
+			//                 }
+			//             },
+			//             roam: true,
+			//             focusNodeAdjacency: true,
+			//             lineStyle: {
+			//                 normal: {
+			//                     width: 0.5,
+			//                     curveness: 0.3,
+			//                     opacity: 0.7
+			//                 }
+			//             },
+			//             force: {
+			// 		        layoutAnimation: true,
+			// 		        repulsion:10
+			// 		        //gravity:1
+			//         	},
+			//         	circular: {
+		 //                    rotateLabel: true
+		 //                }
+			//         }
+			//     ]
+			// }, true);
+   //  	}
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
