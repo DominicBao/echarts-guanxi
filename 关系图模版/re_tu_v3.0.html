@@ -10,10 +10,6 @@
     <script type="text/javascript" src="js/dian.js"></script>
 <!--     <script type="text/javascript" src="bian.js"></script>
     <script type="text/javascript" src="jiedian.js"></script> -->
-    <script type="text/javascript" src="7jiadian.js"></script>
-    <script type="text/javascript" src="7bian.js"></script>
-    <script type="text/javascript" src="30jiedian.js"></script>
-    <script type="text/javascript" src="30bian.js"></script>
     <script type="text/javascript" src="dist/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="dist/main.js"></script>
     
@@ -40,6 +36,7 @@
 		<div id="power" style="display: none;">
 		<input type="test" name="repulsion" placeholder="节点间斥力因子" style="width: 96%">
 		<input type="test" name="gravity" placeholder="向中心点引力因子" style="width: 96%">
+		<input type="test" name="edgeLength" placeholder="节点之间的距离" style="width: 96%">
 		</div>
 	    <br>
 	    <button onclick="shaixuan()" value="请按这里" style="width: 100%;background-color: #26a2ff;color: #fff;border-radius: 4px;">点击筛选</button>
@@ -69,12 +66,7 @@
         log1+="4.在边维度中增加了测试时间维度，点维度单独表示公司\n";
         log1+="5.对点的大小进行了重新设定，按照此公司与其他公司最大的重复数量进行划分，规定为5类，x>10000，5000<x<1000,1000<x<500,500<x<100,100<x<0，其中阶段4及以上要重点关注\n";
         //alert(log1);
-    	
-
-
     	click_mo();
-
-
     	var myChart = echarts.init(document.getElementById('main'));
     	shaixuan();
 
