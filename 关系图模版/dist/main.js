@@ -3,7 +3,9 @@ var pan_quan = 0;
 
 //筛选模块
 function shaixuan(){
-	
+	var bian = JSON.parse(store.get('bian'));
+	var dian = JSON.parse(store.get('dian'));
+	console.log(typeof(bian));
 	console.log(bian);
 	console.log(dian);
 	option3(myChart,bian,dian);
@@ -149,7 +151,7 @@ function option3(myChart,bian,jiedian){
 	                return {
 	                    source: edge.Source,
 	                    target: edge.Target,
-	                    value:edge.round,
+	                    value:edge.value,
 	                    value1:edge.cnt,
 	                    time_s:edge.start_time,
 	                    label: {
