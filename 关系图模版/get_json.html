@@ -7,6 +7,9 @@
 	<title>excel——json</title>
 </head>
 <body>
+	<button id="clear_all">一键清理</button>
+	<button id="listen_all">查看大小</button>
+	<br>
 	<textarea id="input_text" placeholder="这里输入excel表格内容" style="width: 500px;height: 500px;"></textarea>
 	<br>
 	<button id="change_button">转换</button>
@@ -14,10 +17,14 @@
 	<br>
 	<textarea id="post_text" style="width: 500px;height: 500px;">这里输出json串内容</textarea>
 	<br>
-	<button id="download_bian">下载为边文件</button>
-	<button id="download_dian">下载为点文件</button>
+<!-- 	<button id="download_bian">下载为边文件</button>
+	<button id="download_dian">下载为点文件</button> -->
+	<button id="load_bian">载入边信息</button>
+	<button id="load_dian">载入点信息</button>
+
 
 	<script type="text/javascript">
+
 		init();
 	    function init(){
 	        if(!store.enabled){
@@ -74,18 +81,48 @@
 		})
 		$('#download_bian').click(function(){
 			var output = $('#post_text').val();
-			store.remove('bian');
-			store.set('bian', output);
 			output = ("var bian = "+output);
-			
-			//download(output,"bian.js");
+			download(output,"bian.js");
 		})
 		$('#download_dian').click(function(){
 			var output = $('#post_text').val();
+			output = ("var dian = "+output);
+			download(output,"dian.js");
+		})
+		$('#listen_all').click(function(){
+			var size = 0;
+		    for(item in window.localStorage) {
+		        if(window.localStorage.hasOwnProperty(item)) {
+		            size += window.localStorage.getItem(item).length;
+		        }
+		    }
+		    console.log('已使用' + (size / 1024).toFixed(2) + 'KB');
+		    alert('已使用' + (size / 1024).toFixed(2) + 'KB');
+
+			
+
+		})
+
+		$('#load_bian').click(function(){
+			var output = $('#post_text').val();
+			output = JSON.parse(output);
+			store.remove('bian');
+			console.log(output);
+			store.set('bian', output);
+			alert("载入成功");
+		})
+
+		$('#load_dian').click(function(){
+			var output = $('#post_text').val();
+			output = JSON.parse(output);
 			store.remove('dian');
 			store.set('dian', output);
-			output = ("var dian = "+output);
-			
+			alert("载入成功");
+		})
+
+		$('#clear_all').click(function(){
+			store.clearAll();
+			alert("清理成功");
 			//download(output,"dian.js");
 		})
 		function download(mobileCode,name) {

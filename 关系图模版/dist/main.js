@@ -3,11 +3,8 @@ var pan_quan = 0;
 
 //筛选模块
 function shaixuan(){
-	var bian = JSON.parse(store.get('bian'));
-	var dian = JSON.parse(store.get('dian'));
-	console.log(typeof(bian));
-	console.log(bian);
-	console.log(dian);
+	var bian = store.get('bian');
+	var dian = store.get('dian');
 	option3(myChart,bian,dian);
 	time = $("input[ name='time' ] ").val();
 
@@ -116,7 +113,12 @@ function option3(myChart,bian,jiedian){
 	var edgeLength = $("input[ name='edgeLength' ] ").val();
 	repulsion = pan_power(repulsion,"斥力填写有误",10);
 	gravity = pan_power(gravity,"引力填写有误",0.1);
-	edgeLength = pan_power_edgeLength(edgeLength,"节点距离填写有误",30);
+	edgeLength = pan_power_edgeLength(edgeLength,"节点距离填写有误",[1,100]);
+
+
+	console.log();
+
+
 
 	myChart.hideLoading();
 	myChart.setOption(option = {
@@ -125,7 +127,24 @@ function option3(myChart,bian,jiedian){
 	    },
 	    tooltip:{
 	        formatter:function(params){
-	        	return "起始点："+params.data.source+",重复率："+params.data.value + ",重复数：" + params.data.value1+",测试时间："+params.data.time_s;
+	        	var res = "";
+	        	if(params.data.pan == 1){
+	        		var x = Object.keys(jiedian[0]).length-3;
+	        		res += "点id："+params.data.id+",名字："+params.data.name+",权重："+params.data.symbolSize;
+	        		for(var i = 0;i < x;i++){
+	        			res += ",补充信息"+i+"："+params.data.select[i];
+	        		}
+	        		return res;
+	        	}
+	        	if(params.data.pan == 2){
+	        		var x = Object.keys(bian[0]).length-4;
+	        		res += "起始点："+params.data.source+"\r\n边名："+params.data.name + ",权重：" + params.data.value;
+	        		for(var i = 0;i < x;i++){
+	        			res += ",补充信息"+i+"："+params.data.select[i];
+	        		}
+	        		return res;
+	        	}
+	        	
 	        }
 
 	    },
@@ -137,23 +156,40 @@ function option3(myChart,bian,jiedian){
 	            layout: lay,//'circular',//'force',
 	            // progressiveThreshold: 700,
 	            data: jiedian.map(function (node) {
+	            	var x = Object.keys(jiedian[0]).length-3;
+	            	var select = [];
+	            	for(var i = 0;i < x;i++){
+	            		var node_name = "select"+(i+1);
+	            		node_1 = node[node_name];
+	            		select.push(node_1);
+	            	}
+	            	//var select = [node.select1,node.select2];
 	                return {
 	                    id: node.id,
-	                    name: node.id,
-	                    symbolSize: (node.size*2),
-	                    value1:node.cnt,
-	                    value:"无统计"
+	                    name: node.name,
+	                    symbolSize: node.size,
+	                    value:"无统计",
+	                    pan:1,
+	                    select:select
 
 
 	                };
 	            }),
 	            links: bian.map(function (edge) {
+	            	var x = Object.keys(bian[0]).length-4;
+	            	var select = [];
+	            	for(var i = 0;i < x;i++){
+	            		var node_name = "select"+(i+1);
+	            		node_1 = edge[node_name];
+	            		select.push(node_1);
+	            	}
 	                return {
 	                    source: edge.Source,
 	                    target: edge.Target,
+	                    name:edge.info,
 	                    value:edge.value,
-	                    value1:edge.cnt,
-	                    time_s:edge.start_time,
+	                    select:select,
+	                    pan:2,
 	                    label: {
 			                normal: {
 			                    show: false
