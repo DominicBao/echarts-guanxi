@@ -3,7 +3,6 @@
 <head>
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/FileSaver.js"></script>
-	<script src="js/store.legacy.min.js"></script>
 	<title>excel——json</title>
 </head>
 <body>
@@ -18,23 +17,6 @@
 	<button id="download_dian">下载为点文件</button>
 
 	<script type="text/javascript">
-		init();
-	    function init(){
-	        if(!store.enabled){
-	            alert("你的浏览器不支持本地存储，请使用更高版本的浏览器");
-	            return;
-	        }else{
-	            console.log("你的浏览器支持");
-	        }
-	    }
-
-	 //    store.set('username', 'marcus');
-		// var res = store.get('username');
-		// store.remove('username');
-		// alert(res);
-
-
-
 		$('#change_button').click(function(){
 			//$('#post_text').val($('#input_text').val().replace(/\n/g,";"));
 			var input = $('#input_text').val().replace(/\n/g,";").split(";");
@@ -74,19 +56,13 @@
 		})
 		$('#download_bian').click(function(){
 			var output = $('#post_text').val();
-			store.remove('bian');
-			store.set('bian', output);
 			output = ("var bian = "+output);
-			
-			//download(output,"bian.js");
+			download(output,"bian.js");
 		})
 		$('#download_dian').click(function(){
 			var output = $('#post_text').val();
-			store.remove('dian');
-			store.set('dian', output);
 			output = ("var dian = "+output);
-			
-			//download(output,"dian.js");
+			download(output,"dian.js");
 		})
 		function download(mobileCode,name) {
 			var file = new File([mobileCode], name, { type: "text/plain;charset=utf-8" });
