@@ -1,11 +1,48 @@
-//全局变量，控制初始化
-var pan_quan = 0;
-
 //筛选模块
 function shaixuan(){
+
 	var bian = store.get('bian');
 	var dian = store.get('dian');
+	if(bian == null || dian == null){
+		alert("方案一失效，采取方案二从js中读取数据");
+		bian = bian1;
+		dian = dian1;
+	}
+	console.log(bian);
 	option3(myChart,bian,dian);
+	//筛选模块
+	//= > >= < <= !=
+	for (var i = 0; i < bian.length; i++) {
+		start = $("input[ name='start' ] ").val();
+		if(start[0] == "="){
+
+		}
+	}
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+	console.log(bian.length);
+
+
+
+
+
+
+
+
+
+
 	time = $("input[ name='time' ] ").val();
 
 	//判断time是否合法，不输入默认为7天维度
@@ -13,7 +50,7 @@ function shaixuan(){
 		time = "7";
 	}
 	if(time != "7" && time != "30"){
-		alert("请在第一行输入正确的日期");
+		//alert("请在第一行输入正确的日期");
 		return;
 	}
 	if(time == "7"){

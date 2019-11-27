@@ -25,11 +25,11 @@
     
     <div style="position: absolute;width: 15%;z-index: 99;display: none;background-color: aliceblue;border-radius: 4px;" id="select">
     	<p id = "select-p" style="text-align: center;line-height: 0px;color: #0000008c">筛选器</p>
-    	<input type="test" name="time" placeholder="此处填写（7/30）天" style="width: 96%;">
+<!--     	<input type="test" name="start" placeholder="按起始点筛选" style="width: 96%;">
     	<input type="test" name="element" placeholder="此处填写要查询的维度（不填默认为ip）" style="width: 96%;">
 	    <input type="test" name="name" placeholder="此处填写公司名称" style="width: 96%;">
 	    <input type="test" name="round" placeholder="此处填写边重复率大于x%" style="width: 96%">
-	    <input type="test" name="cnt" placeholder="此处填写边重复数大于x" style="width: 96%">
+	    <input type="test" name="cnt" placeholder="此处填写边重复数大于x" style="width: 96%"> -->
 	    <select id="select_lay" onclick="change_lay(this)">
 			<option value="circular">circular</option>
 			<option value="force">force</option>
@@ -55,112 +55,9 @@
     <div id="main" style="width: 100%;height:800px"></div>
 
     <script type="text/javascript">
-    	log1 = "竞对图V2.0版本\n";
-        log1+="更新说明：\n";
-        log1+="1.增加了右边的数据展示，展示内容为边筛选后的边数据，按重复率进行排序\n";
-
-        log1+="竞对图V2.1版本\n";
-        log1+="更新说明：\n";
-        log1+="1.增加了时间，维度的划分，由时间和维度筛选器控制。\n";
-        log1+="2.新增了时间，维度的筛选器，去除了echarts自带的点筛选器，统一在筛选div中筛选\n";
-        log1+="3.对查看进行了限制，避免了数据量过大导致的页面渲染卡死\n";
-        log1+="4.在边维度中增加了测试时间维度，点维度单独表示公司\n";
-        log1+="5.对点的大小进行了重新设定，按照此公司与其他公司最大的重复数量进行划分，规定为5类，x>10000，5000<x<1000,1000<x<500,500<x<100,100<x<0，其中阶段4及以上要重点关注\n";
-        //alert(log1);
     	click_mo();
     	var myChart = echarts.init(document.getElementById('main'));
     	shaixuan();
-
-
-
-    	//option1(myChart,bian,jiedian);
-
-		
-
-   //  	function option2(myChart,bian,jiedian){
-   //  		myChart.hideLoading();
-   //  		myChart.setOption(option = {
-			//     title: {
-			//         text: ''
-			//     },
-			//     tooltip:{
-			//         formatter:function(params){
-			//         	return "起始点："+params.data.source+",重复率："+params.data.value + ",重复数：" + params.data.value1+",测试时间："+params.data.time_s;
-			//         }
-
-			//     },
-			//     animationDurationUpdate: 1500,
-			//     animationEasingUpdate: 'quinticInOut',
-			//     series : [
-			//         {
-			//             type: 'graph',
-			//             layout: 'circular',//'force',
-			//             // progressiveThreshold: 700,
-			//             data: jiedian.map(function (node) {
-			//                 return {
-			//                     id: node.id,
-			//                     name: node.id,
-			//                     symbolSize: (node.size*2),
-			//                     value1:node.cnt,
-			//                     value:"无统计"
-
-
-			//                 };
-			//             }),
-			//             links: bian.map(function (edge) {
-			//                 return {
-			//                     source: edge.Source,
-			//                     target: edge.Target,
-			//                     value:edge.round,
-			//                     value1:edge.cnt,
-			//                     time_s:edge.start_time,
-			//                     label: {
-			// 		                normal: {
-			// 		                    show: false
-			// 		                }
-			// 		            },
-			// 		            lineStyle:{
-			// 		               	color:"#0000006b"
-			// 		            }
-			//                 };
-			//             }),
-			//            	//edgeSymbol: ['circle', 'arrow'],
-			//             label: {
-			//                 emphasis: {
-			//                     position: 'right',
-			//                     show: true
-			//                 }
-			//             },
-			//             roam: true,
-			//             focusNodeAdjacency: true,
-			//             lineStyle: {
-			//                 normal: {
-			//                     width: 0.5,
-			//                     curveness: 0.3,
-			//                     opacity: 0.7
-			//                 }
-			//             },
-			//             force: {
-			// 		        layoutAnimation: true,
-			// 		        repulsion:10
-			// 		        //gravity:1
-			//         	},
-			//         	circular: {
-		 //                    rotateLabel: true
-		 //                }
-			//         }
-			//     ]
-			// }, true);
-   //  	}
-
-
-
-
-
-
-
-
-
     </script>
 </body>
 </html>

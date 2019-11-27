@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/FileSaver.js"></script>
 	<script src="js/store.legacy.min.js"></script>
 	<title>excel——json</title>
 </head>
 <body>
+	<a href="example.xlsx">点击此处下载样例模版</a>
+	<br>
 	<button id="clear_all">一键清理</button>
 	<button id="listen_all">查看大小</button>
+	<button id="go_to">部署完成跳转</button>
 	<br>
 	<textarea id="input_text" placeholder="这里输入excel表格内容" style="width: 500px;height: 500px;"></textarea>
 	<br>
@@ -17,10 +21,12 @@
 	<br>
 	<textarea id="post_text" style="width: 500px;height: 500px;">这里输出json串内容</textarea>
 	<br>
-<!-- 	<button id="download_bian">下载为边文件</button>
-	<button id="download_dian">下载为点文件</button> -->
+
 	<button id="load_bian">载入边信息</button>
 	<button id="load_dian">载入点信息</button>
+	<br>
+	<button id="download_bian">下载为边文件</button>
+	<button id="download_dian">下载为点文件</button>
 
 
 	<script type="text/javascript">
@@ -81,12 +87,12 @@
 		})
 		$('#download_bian').click(function(){
 			var output = $('#post_text').val();
-			output = ("var bian = "+output);
+			output = ("var bian1 = "+output);
 			download(output,"bian.js");
 		})
 		$('#download_dian').click(function(){
 			var output = $('#post_text').val();
-			output = ("var dian = "+output);
+			output = ("var dian1 = "+output);
 			download(output,"dian.js");
 		})
 		$('#listen_all').click(function(){
@@ -123,6 +129,10 @@
 		$('#clear_all').click(function(){
 			store.clearAll();
 			alert("清理成功");
+			//download(output,"dian.js");
+		})
+		$('#go_to').click(function(){
+			window.location.href="re_tu_v3.0.html"
 			//download(output,"dian.js");
 		})
 		function download(mobileCode,name) {
